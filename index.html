@@ -72,7 +72,7 @@ start:{
 
 hurting:{
   emoji:"🤕",
-  message:"I'm so sorry you're still in pain. That hit from behind on the scooty… you and your sister didn’t deserve any of that.",
+  message:"I'm really sorry you're still in pain… that fall wasn’t small. I keep thinking… what if it was worse…",
   choices:[
     {label:"It was really scary",next:"scary"},
     {label:"I'll be fine, don't worry",next:"dontworry"}
@@ -81,7 +81,7 @@ hurting:{
 
 okay:{
   emoji:"💛",
-  message:"I'm glad to hear that… but I know you, you say you're fine even when you're not.",
+  message:"You always say you're fine… but I know you. You hide things when they hurt.",
   choices:[
     {label:"You know me too well 😅",next:"knowme"},
     {label:"I'm really okay, promise",next:"dontworry"}
@@ -90,92 +90,103 @@ okay:{
 
 scary:{
   emoji:"😟",
-  message:"I can only imagine… when I heard about it, my heart just stopped for a moment.",
+  message:"When I heard you fell from the scooty… I don’t know why, but my chest just felt heavy… like something was wrong.",
   choices:[
     {label:"You were that worried?",next:"worried"},
-    {label:"It's over now, I'm safe",next:"safe"}
+    {label:"I'm safe now",next:"safe"}
   ]
 },
 
 dontworry:{
   emoji:"🌿",
-  message:"See… that’s the thing. I can’t NOT worry when it comes to you.",
+  message:"That’s the thing… I can’t NOT worry when it comes to you. It’s not something I can control anymore.",
   choices:[
-    {label:"That means a lot to me 🥺",next:"meansalot"},
+    {label:"That means a lot 🥺",next:"meansalot"},
     {label:"Why do you care so much?",next:"worried"}
   ]
 },
 
 knowme:{
   emoji:"😊",
-  message:"Maybe I do… maybe I notice you more than you think.",
+  message:"Maybe I do… maybe I’ve been paying attention to you more than I should.",
   choices:[
-    {label:"What do you mean?",next:"realization"},
+    {label:"What do you mean?",next:"realization1"},
     {label:"I notice you too",next:"meansalot"}
   ]
 },
 
-// 🔥 ENTRY TO GAME FLOW
+// 💭 FIRST EMOTIONAL SHIFT
 worried:{
   emoji:"💭",
-  message:"Because somewhere along the way… you became someone really important to me.",
+  message:"Because somewhere along the way… you stopped being just someone I know. You became someone I feel.",
   choices:[
-    {label:"Let’s take a break 🎮", next:"breakGame"},
-    {label:"Continue…", next:"realization"}
+    {label:"...",next:"holdGame1"}
   ]
 },
 
-safe:{
-  emoji:"🕊️",
-  message:"You are safe… and that’s all that matters.",
-  choices:[
-    {label:"Tell me…",next:"realization"},
-    {label:"I think I already know",next:"confession"}
-  ]
+// 🎮 FIRST GAME (SOFT MOMENT)
+holdGame1:{
+  emoji:"🤍",
+  message:"Can you do something for me… just hold this for a moment?",
+  isHoldGame:true,
+  nextStep:"afterHold1"
 },
 
-meansalot:{
-  emoji:"✨",
-  message:"You mean a lot to me too… more than I say.",
-  choices:[
-    {label:"What's that?",next:"realization"}
-  ]
-},
-
-// 🎮 HOLD GAME STEP
-breakGame:{
-  emoji:"🎮",
-  message:"Let’s take a little break… hold this for me 💖",
-  isHoldGame:true
-},
-
-// 💖 HEART GAME STEP
-heartGame:{
+afterHold1:{
   emoji:"💖",
-  message:"Now… catch all my love 💕",
-  isHeartGame:true
+  message:"That’s how much I wish I could be there… holding your hand until everything feels okay.",
+  choices:[
+    {label:"Continue…",next:"realization1"}
+  ]
 },
 
-// 💬 BACK TO STORY
-realization:{
+// 💬 BUILD DEEPER
+realization1:{
   emoji:"🌙",
-  message:"I realized that I don’t just care about you as a friend… the thought of losing you scared me.",
+  message:"That moment when I didn’t know if you were okay… it made me realize something I was avoiding.",
+  choices:[
+    {label:"What did you realize?",next:"heartGame1"}
+  ]
+},
+
+// 💖 SECOND GAME (LOVE EXPRESSION)
+heartGame1:{
+  emoji:"💗",
+  message:"Before I tell you… catch these first 💕",
+  isHeartGame:true,
+  nextStep:"afterHeart1"
+},
+
+afterHeart1:{
+  emoji:"✨",
+  message:"See… no matter how many times they fall… my feelings always come back to you.",
+  choices:[
+    {label:"Tell me now…",next:"realization2"}
+  ]
+},
+
+// 💔 FINAL BUILD
+realization2:{
+  emoji:"🌙",
+  message:"I realized… I don’t just care about you as a friend anymore. The thought of losing you… scared me more than anything.",
   choices:[
     {label:"Continue… ❤️",next:"confession"}
   ]
 },
 
+// 💖 CONFESSION
 confession:{
   emoji:"🌷",
-  message:"I really like you… not in a rush, not with pressure. I just do.",
+  message:"I really like you. Not in a rushed way… not with pressure. I just… do. And right now, all I want is for you to heal… and smile again.",
   choices:[
     {label:"Read the last message 💕",next:"ending"}
   ]
 },
 
+// 🌸 END
 ending:{
   emoji:"🌸",
-  message:"Let’s just take things slowly… you focus on getting better, I’ll be right here ❤️",
+  message:"Let’s take things slowly… you get better, I’ll stay right here. No pressure… just someone who truly cares about you ❤️",
   final:true
 }
 
@@ -338,11 +349,10 @@ function createGame(container){
   holdBtn.addEventListener("touchend",stopHold);
 }
 
-function showHoldGameFlow(container){
+function showHoldGameFlow(container, nextStep){
 
   createGame(container);
 
-  // after hold game
   setTimeout(()=>{
 
     const wrap = document.createElement("div");
@@ -351,7 +361,9 @@ function showHoldGameFlow(container){
     const btn = document.createElement("button");
     btn.className = "btn";
     btn.textContent = "Next 💕";
-    btn.onclick = ()=>render("heartGame");
+
+    // ✅ dynamic next step
+    btn.onclick = ()=>render(nextStep);
 
     wrap.appendChild(btn);
     container.appendChild(wrap);
@@ -359,7 +371,7 @@ function showHoldGameFlow(container){
   }, 4000);
 }
 
-function showHeartGameFlow(container){
+function showHeartGameFlow(container, nextStep){
 
   createHeartPopGame(container);
 
@@ -381,13 +393,15 @@ function showHeartGameFlow(container){
     const btn = document.createElement("button");
     btn.className = "btn";
     btn.textContent = "Continue 💕";
-    btn.onclick = ()=>render("realization");
+
+    // ✅ dynamic next step
+    btn.onclick = ()=>render(nextStep);
 
     wrap.appendChild(btn);
     container.appendChild(wrap);
 
   }, 10000);
-}  
+}
 
 // ---- RENDER ----
 function render(id){
@@ -413,17 +427,18 @@ function render(id){
       msgEl.innerHTML+=`<span class="cursor"></span>`;
       setTimeout(type,30);
     }else{
-      msgEl.textContent=s.message;
-      // Show game if flagged
-      if(s.isHoldGame){
-    showHoldGameFlow(app);
+  msgEl.textContent = s.message;
+
+  if(s.isHoldGame){
+    showHoldGameFlow(app, s.nextStep);
   }
   else if(s.isHeartGame){
-    showHeartGameFlow(app);
-  }else{
+    showHeartGameFlow(app, s.nextStep);
+  }
+  else{
     showChoices(s);
   }
-    }
+}
   };
   type();
 }
