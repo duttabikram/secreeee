@@ -51,7 +51,6 @@ h1,h2,h3{font-family:'Playfair Display',serif}
 </head>
 <body>
 
-<button class="music-btn" id="musicBtn" title="Play / Mute music">🔇</button>
   <audio id="bgMusic" loop>
   <source src="violin.mp3" type="audio/mpeg">
 </audio>
@@ -214,24 +213,9 @@ function fadeInAudio(audio) {
     }
   }, 200);
 }
-  
-let musicPlaying = true;
-const audio = document.getElementById("bgMusic");
-const btn = document.getElementById("musicBtn");
 
-// 🎻 soft romantic volume
-audio.volume = 0.3;
-
-btn.onclick = function () {
-  if (musicPlaying) {
-    audio.pause();
-    btn.textContent = "🔇";
-  } else {
-    fadeInAudio(audio);
-    btn.textContent = "🎵";
-  }
-  musicPlaying = !musicPlaying;
-};
+audio.volume = 0.2;
+fadeInAudio(audio);
   
 
 // ---- HOLD BUTTON GAME ----
