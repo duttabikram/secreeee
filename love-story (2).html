@@ -70,14 +70,21 @@ setInterval(()=>{const h=document.createElement("span");h.className="heart";h.te
 let musicPlaying=false;
 let musicCtx=null;
 let musicTimeout=null;
-const musicNotes=[523.25,587.33,659.25,698.46,783.99,698.46,659.25,587.33,523.25,493.88,440,493.88,523.25,587.33,659.25,523.25];
-function playMusicLoop(){
+const musicNotes = [
+  261.63, 329.63, 392.00,
+  329.63, 392.00, 440.00,
+  392.00, 329.63,
+  261.63, 329.63, 392.00,
+  440.00, 392.00,
+  329.63, 261.63
+];
+  function playMusicLoop(){
   if(!musicCtx||!musicPlaying)return;
   const dur=0.45;
   musicNotes.forEach((freq,i)=>{
     const osc=musicCtx.createOscillator();
     const gain=musicCtx.createGain();
-    osc.type="sine";
+  osc.type="triangle";
     osc.frequency.value=freq;
     gain.gain.setValueAtTime(0,musicCtx.currentTime+i*dur);
     gain.gain.linearRampToValueAtTime(0.1,musicCtx.currentTime+i*dur+0.05);
