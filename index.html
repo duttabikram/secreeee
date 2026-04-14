@@ -218,9 +218,12 @@ const heartEmojis=["💕","💗","🌸","✨","💛","🩷"];
 setInterval(()=>{const h=document.createElement("span");h.className="heart";h.textContent=heartEmojis[Math.floor(Math.random()*heartEmojis.length)];h.style.left=Math.random()*100+"%";h.style.animationDuration=(6+Math.random()*6)+"s";document.body.appendChild(h);setTimeout(()=>h.remove(),12000)},2500);
 
 
-function fadeInAudio(audio) {
+const audio = document.getElementById("bgMusic");
+
+document.body.addEventListener("click", () => {
   audio.volume = 0;
   audio.play();
+
   let vol = 0;
   const fade = setInterval(() => {
     if (vol < 0.3) {
@@ -230,13 +233,8 @@ function fadeInAudio(audio) {
       clearInterval(fade);
     }
   }, 200);
-}
 
-const audio = document.getElementById("bgMusic");  // ✅ ADD THIS
-
-audio.volume = 0.3;
-fadeInAudio(audio);
-  
+}, { once: true });
 
 // ---- HOLD BUTTON GAME ----
 
