@@ -52,6 +52,9 @@ h1,h2,h3{font-family:'Playfair Display',serif}
 <body>
 
 <button class="music-btn" id="musicBtn" title="Play / Mute music">🔇</button>
+  <audio id="bgMusic" loop>
+  <source src="violin.mp3" type="audio/mpeg">
+</audio>
 <div id="app"></div>
 
 <script>
@@ -66,49 +69,45 @@ const app=document.getElementById("app");
 const heartEmojis=["💕","💗","🌸","✨","💛","🩷"];
 setInterval(()=>{const h=document.createElement("span");h.className="heart";h.textContent=heartEmojis[Math.floor(Math.random()*heartEmojis.length)];h.style.left=Math.random()*100+"%";h.style.animationDuration=(6+Math.random()*6)+"s";document.body.appendChild(h);setTimeout(()=>h.remove(),12000)},2500);
 
-// ---- MUSIC PLAYER ----
-let musicPlaying=false;
-let musicCtx=null;
-let musicTimeout=null;
-const musicNotes=[523.25,587.33,659.25,698.46,783.99,698.46,659.25,587.33,523.25,493.88,440,493.88,523.25,587.33,659.25,523.25];
-function playMusicLoop(){
-  if(!musicCtx||!musicPlaying)return;
-  const dur=0.45;
-  musicNotes.forEach((freq,i)=>{
-    const osc=musicCtx.createOscillator();
-    const gain=musicCtx.createGain();
-    osc.type="sine";
-    osc.frequency.value=freq;
-    gain.gain.setValueAtTime(0,musicCtx.currentTime+i*dur);
-    gain.gain.linearRampToValueAtTime(0.1,musicCtx.currentTime+i*dur+0.05);
-    gain.gain.linearRampToValueAtTime(0,musicCtx.currentTime+(i+0.9)*dur);
-    osc.connect(gain);gain.connect(musicCtx.destination);
-    osc.start(musicCtx.currentTime+i*dur);
-    osc.stop(musicCtx.currentTime+(i+1)*dur);
-  });
-  musicTimeout=setTimeout(()=>{if(musicPlaying)playMusicLoop()},musicNotes.length*dur*1000);
+
+function fadeInAudio(audio) {
+  audio.volume = 0;
+  audio.play();
+  let vol = 0;
+  const fade = setInterval(() => {
+    if (vol < 0.3) {
+      vol += 0.02;
+      audio.volume = vol;
+    } else {
+      clearInterval(fade);
+    }
+  }, 200);
 }
-document.getElementById("musicBtn").onclick=function(){
-  if(musicPlaying){
-    musicPlaying=false;
-    clearTimeout(musicTimeout);
-    if(musicCtx){musicCtx.close();musicCtx=null}
-    this.textContent="🔇";
-    this.title="Play music";
-  }else{
-    musicCtx=new(window.AudioContext||window.webkitAudioContext)();
-    musicPlaying=true;
-    this.textContent="🎵";
-    this.title="Mute music";
-    playMusicLoop();
+  
+let musicPlaying = false;
+const audio = document.getElementById("bgMusic");
+const btn = document.getElementById("musicBtn");
+
+// 🎻 soft romantic volume
+audio.volume = 0.3;
+
+btn.onclick = function () {
+  if (musicPlaying) {
+    audio.pause();
+    btn.textContent = "🔇";
+  } else {
+    fadeInAudio(audio);
+    btn.textContent = "🎵";
   }
+  musicPlaying = !musicPlaying;
 };
+  
 
 // ---- HOLD BUTTON GAME ----
 function createGame(container){
   const gc=document.createElement("div");
   gc.className="game-card";
-  gc.innerHTML=`<div class="game-title">🎮 A Little Game</div><p class="game-sub">Hold the button… just like I wanna hold your hand</p><div class="ring-wrap"><svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="45"/><circle class="ring-fill" id="ringFill" cx="50" cy="50" r="45"/></svg><button class="hold-btn" id="holdBtn">0%</button></div><div id="gameReveal"></div>`;
+  gc.innerHTML=`<div class="game-title">🎮 A Little Game</div><p class="game-sub">Hold the button… </p><div class="ring-wrap"><svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="45"/><circle class="ring-fill" id="ringFill" cx="50" cy="50" r="45"/></svg><button class="hold-btn" id="holdBtn">0%</button></div><div id="gameReveal"></div>`;
   container.appendChild(gc);
 
   const holdBtn=document.getElementById("holdBtn");
