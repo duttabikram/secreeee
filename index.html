@@ -389,10 +389,16 @@ function render(id){
     }else{
       msgEl.textContent=s.message;
       // Show game if flagged
-      if(s.game){
-       startGameFlow(app);
-      }
-      showChoices(s);
+      if(s.isGame){
+
+    // wait a bit after typing finishes
+    setTimeout(()=>{
+      startGameFlow(app);
+    }, 500);
+
+  }else{
+    showChoices(s);
+  }
     }
   };
   type();
