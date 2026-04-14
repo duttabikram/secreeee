@@ -59,7 +59,119 @@ h1,h2,h3{font-family:'Playfair Display',serif}
 
 <script>
 // ---- STEPS ----
-const steps={start:{emoji:"🌸",message:"Hey… I heard about the accident. Before anything else — how are you feeling right now?",choices:[{label:"Still hurting a bit 😔",next:"hurting"},{label:"I'm okay, getting better 😊",next:"okay"}]},hurting:{emoji:"🤕",message:"I'm so sorry you're still in pain. That hit from behind on the scooty… you and your sister didn't deserve any of that. I wish I could take some of that pain away.",choices:[{label:"It was really scary",next:"scary"},{label:"I'll be fine, don't worry",next:"dontworry"}]},okay:{emoji:"💛",message:"I'm glad to hear that. But I know you — you always say you're fine even when you're not. That fall from the scooty wasn't small. Please don't push yourself too hard.",choices:[{label:"You know me too well 😅",next:"knowme"},{label:"I'm really okay, promise",next:"dontworry"}]},scary:{emoji:"😟",message:"I can only imagine. Someone hitting you from behind like that, both of you falling… When I heard about it, my heart just stopped for a moment. I couldn't think straight.",choices:[{label:"You were that worried?",next:"worried"},{label:"It's over now, I'm safe",next:"safe"}]},dontworry:{emoji:"🌿",message:"See, that's the thing — I can't NOT worry. When I found out about the accident, about you falling off the scooty… something inside me just froze. I didn't know what to do with myself.",choices:[{label:"That means a lot to me 🥺",next:"meansalot"},{label:"Why do you care so much?",next:"worried"}]},knowme:{emoji:"😊",message:"Maybe I do. Maybe I pay more attention than you realize. And when you got hurt… it hit me differently. Like something I was trying to ignore suddenly became very real.",choices:[{label:"What do you mean?",next:"realization"},{label:"I pay attention to you too",next:"meansalot"}]},worried:{emoji:"💭",message:"Because somewhere along the way, you stopped being just someone I know. You became someone I think about. Someone whose pain I feel. And this accident made me realize I can't keep pretending otherwise.",game:true,choices:[{label:"What are you saying? 🥹",next:"realization"},{label:"I think I feel the same",next:"confession"}]},safe:{emoji:"🕊️",message:"You are safe. And I'm so grateful for that. But in that moment when I didn't know if you were okay… I realized something about myself. About how I feel when it comes to you.",game:true,choices:[{label:"Tell me…",next:"realization"},{label:"I think I already know",next:"confession"}]},meansalot:{emoji:"✨",message:"You mean a lot to me too. More than I've been able to say out loud. This accident, as terrible as it was, made one thing very clear to me.",game:true,choices:[{label:"What's that?",next:"realization"}]},realization:{emoji:"🌙",message:"I realized that I don't just care about you as a friend. The thought of losing you, even for a second… it scared me more than anything. Because somewhere along the way, you became my person.",choices:[{label:"Continue… ❤️",next:"confession"}]},confession:{emoji:"🌷",message:"I really like you. Not in a rush, not with any pressure. I just… like you. The way you laugh, the way you care, everything. And right now, all I want is for you to heal, to rest, and to know that someone out here truly cares about you.",choices:[{label:"Read the last message 💕",next:"ending"}]},ending:{emoji:"🌸",message:"Let's not rush anything. Let's just take things slowly. You focus on getting better — I'll be right here. No pressure, no expectations. Just me, caring about you, one day at a time. Get well soon ❤️",final:true}};
+const steps = {
+
+start:{
+  emoji:"🌸",
+  message:"Hey… I heard about the accident. Before anything else — how are you feeling right now?",
+  choices:[
+    {label:"Still hurting a bit 😔",next:"hurting"},
+    {label:"I'm okay, getting better 😊",next:"okay"}
+  ]
+},
+
+hurting:{
+  emoji:"🤕",
+  message:"I'm so sorry you're still in pain...",
+  choices:[
+    {label:"It was really scary",next:"scary"},
+    {label:"I'll be fine, don't worry",next:"dontworry"}
+  ]
+},
+
+okay:{
+  emoji:"💛",
+  message:"I'm glad to hear that...",
+  choices:[
+    {label:"You know me too well 😅",next:"knowme"},
+    {label:"I'm really okay, promise",next:"dontworry"}
+  ]
+},
+
+scary:{
+  emoji:"😟",
+  message:"I can only imagine...",
+  choices:[
+    {label:"You were that worried?",next:"worried"},
+    {label:"It's over now, I'm safe",next:"safe"}
+  ]
+},
+
+dontworry:{
+  emoji:"🌿",
+  message:"See, that's the thing — I can't NOT worry...",
+  choices:[
+    {label:"That means a lot to me 🥺",next:"meansalot"},
+    {label:"Why do you care so much?",next:"worried"}
+  ]
+},
+
+knowme:{
+  emoji:"😊",
+  message:"Maybe I do...",
+  choices:[
+    {label:"What do you mean?",next:"realization"},
+    {label:"I pay attention to you too",next:"meansalot"}
+  ]
+},
+
+// 🔥 STEP 4 ADDED HERE
+worried:{
+  emoji:"💭",
+  message:"Because somewhere along the way...",
+  choices:[
+    {label:"Let’s take a break 🎮", next:"breakGame"},
+    {label:"Continue…", next:"realization"}
+  ]
+},
+
+safe:{
+  emoji:"🕊️",
+  message:"You are safe...",
+  choices:[
+    {label:"Tell me…",next:"realization"},
+    {label:"I think I already know",next:"confession"}
+  ]
+},
+
+meansalot:{
+  emoji:"✨",
+  message:"You mean a lot to me too...",
+  choices:[
+    {label:"What's that?",next:"realization"}
+  ]
+},
+
+// 🔥 STEP 3 ADDED HERE
+breakGame:{
+  emoji:"🎮",
+  message:"Let’s take a little break… and play something together 💖",
+  isGame:true
+},
+
+realization:{
+  emoji:"🌙",
+  message:"I realized that I don't just care about you as a friend...",
+  choices:[
+    {label:"Continue… ❤️",next:"confession"}
+  ]
+},
+
+confession:{
+  emoji:"🌷",
+  message:"I really like you...",
+  choices:[
+    {label:"Read the last message 💕",next:"ending"}
+  ]
+},
+
+ending:{
+  emoji:"🌸",
+  message:"Let's not rush anything...",
+  final:true
+}
+
+};
 
 const totalSteps=Object.keys(steps).length;
 let visited=0;
@@ -218,6 +330,39 @@ function createGame(container){
   holdBtn.addEventListener("touchend",stopHold);
 }
 
+function startGameFlow(container){
+
+  createGame(container);
+  createHeartPopGame(container);
+
+  setTimeout(()=>{
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="emoji">💖</div>
+      <div class="message">
+        That was fun… but honestly,<br>
+        I’d rather spend time like this with you forever 🤍
+      </div>
+    `;
+    container.appendChild(card);
+
+    const wrap = document.createElement("div");
+    wrap.className = "choices";
+
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.textContent = "Continue 💕";
+    btn.onclick = ()=>render("realization");
+
+    wrap.appendChild(btn);
+    container.appendChild(wrap);
+
+  }, 10000);
+}
+  
+
 // ---- RENDER ----
 function render(id){
   visited++;
@@ -245,8 +390,7 @@ function render(id){
       msgEl.textContent=s.message;
       // Show game if flagged
       if(s.game){
-        createGame(app);
-        createHeartPopGame(app); // ❤️ new game
+       startGameFlow(app);
       }
       showChoices(s);
     }
