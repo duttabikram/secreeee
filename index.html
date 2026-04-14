@@ -104,6 +104,77 @@ btn.onclick = function () {
   
 
 // ---- HOLD BUTTON GAME ----
+
+function createHeartPopGame(container){
+  const game = document.createElement("div");
+  game.className = "game-card";
+
+  game.innerHTML = `
+    <div class="game-title">💖 Catch My Love</div>
+    <p class="game-sub">Pop the hearts… each one is for you 💕</p>
+    <div id="heartArea" style="position:relative;height:220px;"></div>
+    <p id="scoreText">Hearts collected: 0</p>
+  `;
+
+  container.appendChild(game);
+
+  const area = game.querySelector("#heartArea");
+  const scoreText = game.querySelector("#scoreText");
+
+  let score = 0;
+
+  function spawnHeart(){
+    const heart = document.createElement("div");
+    heart.textContent = "💖";
+    heart.style.position = "absolute";
+    heart.style.fontSize = "24px";
+    heart.style.cursor = "pointer";
+
+    // random position
+    heart.style.left = Math.random()*90 + "%";
+    heart.style.top = "100%";
+
+    area.appendChild(heart);
+
+    let pos = 100;
+
+    const fall = setInterval(()=>{
+      pos -= 2;
+      heart.style.top = pos + "%";
+
+      if(pos < 0){
+        heart.remove();
+        clearInterval(fall);
+      }
+    },30);
+
+    heart.onclick = ()=>{
+      score++;
+      scoreText.textContent = "Hearts collected: " + score;
+      heart.remove();
+      clearInterval(fall);
+
+      // little love message
+      if(score === 5){
+        const msg = document.createElement("p");
+        msg.innerHTML = "See… all my love keeps coming to you 💗";
+        msg.style.marginTop = "10px";
+        game.appendChild(msg);
+      }
+    };
+  }
+
+  // spawn hearts continuously
+  const interval = setInterval(()=>{
+    spawnHeart();
+  },800);
+
+  // stop after some time
+  setTimeout(()=>{
+    clearInterval(interval);
+  },10000);
+}
+  
 function createGame(container){
   const gc=document.createElement("div");
   gc.className="game-card";
@@ -175,6 +246,7 @@ function render(id){
       // Show game if flagged
       if(s.game){
         createGame(app);
+        createHeartPopGame(app); // ❤️ new game
       }
       showChoices(s);
     }
