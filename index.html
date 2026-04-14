@@ -114,19 +114,37 @@ knowme:{
   ]
 },
 
+// 💛 FIXED (ADDED)
+meansalot:{
+  emoji:"✨",
+  message:"You don’t even realize how much that means to me… hearing that from you makes everything feel a little lighter.",
+  choices:[
+    {label:"Continue…", next:"realization1"}
+  ]
+},
+
+// 🕊️ FIXED (ADDED)
+safe:{
+  emoji:"🕊️",
+  message:"I’m just really glad you’re safe… that’s all that matters to me right now.",
+  choices:[
+    {label:"Continue…", next:"realization1"}
+  ]
+},
+
 // 💭 FIRST EMOTIONAL SHIFT
 worried:{
   emoji:"💭",
-  message:"Because somewhere along the way… you stopped being just someone I know. You became someone I feel.",
+  message:"Because somewhere along the way… you stopped being just someone I know. You became someone I worry about… someone I feel scared to lose.",
   choices:[
     {label:"...",next:"holdGame1"}
   ]
 },
 
-// 🎮 FIRST GAME (SOFT MOMENT)
+// 🎮 FIRST GAME
 holdGame1:{
   emoji:"🤍",
-  message:"Can you do something for me… just hold this for a moment?",
+  message:"Can you do something for me… just hold this for a moment? Like I wish I could hold your hand right now…",
   isHoldGame:true,
   nextStep:"afterHold1"
 },
@@ -148,10 +166,10 @@ realization1:{
   ]
 },
 
-// 💖 SECOND GAME (LOVE EXPRESSION)
+// 💖 SECOND GAME
 heartGame1:{
   emoji:"💗",
-  message:"Before I tell you… catch these first 💕",
+  message:"Before I tell you how I feel… catch these. Every one of them is something I never said out loud 💕",
   isHeartGame:true,
   nextStep:"afterHeart1"
 },
@@ -176,7 +194,7 @@ realization2:{
 // 💖 CONFESSION
 confession:{
   emoji:"🌷",
-  message:"I really like you. Not in a rushed way… not with pressure. I just… do. And right now, all I want is for you to heal… and smile again.",
+  message:"I really like you. And that accident made me realize it even more… because the thought of losing you felt worse than anything I’ve ever imagined.",
   choices:[
     {label:"Read the last message 💕",next:"ending"}
   ]
